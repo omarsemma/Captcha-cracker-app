@@ -38,4 +38,4 @@ def captcha_text_v1():
     return render_template('captchaV1.html',content="Captcha prediction")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=1200,debug=True)

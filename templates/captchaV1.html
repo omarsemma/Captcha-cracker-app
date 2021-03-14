@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style-captchaV1.css')}}" />
     <title>Captcha v1</title>
 </head>
 
@@ -66,14 +65,18 @@
             <h1 id="prediction" class="prediction-header prediction">{{prediction}}</h1>
         </div>
     </div>
+    
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-    <div class="alert-message">
+    <div class="alert-message-holder">
+        
         {% for message in messages %}
-        <h1 class="alert-message">{{message}}</h1>
-        <a onclick ="close_alert()" id="close-alert" class="close-butt">
-        <img src="{{ url_for('static', filename='/assets/cancel.svg') }}" >
-        </a>
+        <div class="text-message-holder">
+        <h1 class="alert-text">{{message}}</h1>
+    </div>
+        <div onclick ="close_alert()" id="close-alert" class="close-butt">
+        <img src="{{ url_for('static', filename='/assets/icon-cancel.png') }}" style="max-width:20px">
+        </div>
         {% endfor %}
     </div>
     {% endif %}
@@ -85,7 +88,8 @@
     const submit_default_butt = document.querySelector('#submit');
     const image_holder = document.querySelector('#image_holder');
     const heading_preview_image = document.querySelector('.heading-preview-image');
-
+    const close_exit = document.querySelector('#close-alert');
+    
     // preview image
     default_upload_butt.addEventListener('change', function () {
         const image = this.files[0];
@@ -102,7 +106,10 @@
         }
     });
 
-
+    close_exit.addEventListener('click', function(){
+        const message_holder = document.querySelector('.alert-message-holder');
+        message_holder.style.display = "none"
+    })
     // On click funcs
     function upload_button() {
         default_upload_butt.click();
@@ -120,7 +127,7 @@
     display: -ms-flexbox;
     display: flex;
     height: auto;
-    max-height: 100vh;
+    max-height: 85vh;
     min-height: 100px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -136,31 +143,69 @@
     -ms-flex-align: center;
     align-items: center;
     background-color: #f9ffff;
+    overflow-y: hidden;
 }
 
-.alert-message {
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: auto;
-    height: auto;
-    position: absolute;
-    bottom: 15px;
-    background: rgb(247, 138, 49);
-    border-radius: 20px;
-
-}
-
-.alert-text {
-    
+.alert-message-holder {
+    position: relative;
     font-family: Montserrat, sans-serif;
-    color: #ffffff;
-    font-size: 10px;
-    text-align: center;
+    font-size : 9px;
     font-weight: 600;
+    color : #fff;
+    width: auto;
+    padding : 5px 60px;
+    height: auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: justify;
+       -ms-flex-pack: justify;
+           justify-content: space-between;
+    background: rgb(247, 46, 73);
+    border-radius: 15px;
+    -webkit-animation: slide-in-fwd-bottom 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-in-fwd-bottom 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
+@keyframes slide-in-fwd-bottom {
+  0% {
+    -webkit-transform: translateZ(-1400px) translateY(800px);
+            transform: translateZ(-1400px) translateY(800px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateZ(0) translateY(0);
+            transform: translateZ(0) translateY(0);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes slide-in-fwd-bottom {
+  0% {
+    -webkit-transform: translateZ(-1400px) translateY(800px);
+            transform: translateZ(-1400px) translateY(800px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateZ(0) translateY(0);
+            transform: translateZ(0) translateY(0);
+    opacity: 1;
+  }
+}
+
+#close-alert{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+}
+
 
 .close-butt{
     max-width : 20px;
